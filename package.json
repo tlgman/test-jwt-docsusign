@@ -1,0 +1,17 @@
+{
+  "name": "jwt-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^10.1.6",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
