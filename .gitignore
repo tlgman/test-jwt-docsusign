@@ -1,4 +1,7 @@
 keys/*
 !keys/.gitkeep
 
+generated-jwt/*
+!generated-jwt/.gitkeep
+
 node_modules/

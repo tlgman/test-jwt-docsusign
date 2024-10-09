@@ -11,6 +11,12 @@ async function generateWebToken() {
       type: 'input',
       name: 'privateKeyPath',
       message: 'Enter the path to the RSA private key:',
+      validate: (input) => {
+        if (fs.existsSync(input)) {
+          return true;
+        }
+        return 'The private key file does not exist. Please enter a valid path.';
+      },
     },
     {
       type: 'input',
@@ -25,8 +31,9 @@ async function generateWebToken() {
     },
   ];
 
+  let answers;
   try {
-    const answers = await inquirer.prompt(questions);
+    answers = await inquirer.prompt(questions);
   } catch (error) {
     if (error.name === 'ExitPromptError') {
       console.log('Aborted by user');
@@ -40,6 +47,7 @@ async function generateWebToken() {
     const privateKey = fs.readFileSync(answers.privateKeyPath, 'utf8');
     const payload = {
       sub: answers.userId,
+      aud: 'account-d.docusign.com',
       iat: Math.floor(Date.now() / 1000),
       exp: parseInt(answers.expirationDate),
     };
@@ -48,10 +56,10 @@ async function generateWebToken() {
     const dateUnix = Math.floor(Date.now() / 1000);
     const fileName = `./generated-jwt/${dateUnix}.jwt`;
     fs.writeFileSync(fileName, token);
-    console.log(`JWT enregistré dans ${fileName}`);
+    console.log(`JWT saved to ${fileName}`);
     console.log('Generated JWT:', token);
   } catch (error) {
-    console.error('Error generating JWT:', error.message);
+    console.error('Error generating JWT:', error);
   }
 }
 
